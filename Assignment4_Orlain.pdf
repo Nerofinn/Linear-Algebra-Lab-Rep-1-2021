@@ -1,0 +1,1611 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Assignment4_Orlain",
+      "provenance": [],
+      "authorship_tag": "ABX9TyNBVg2H6nWEHgsk4Wt5BLHB",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Nerofinn/Linear-Algebra-Lab-Rep-1-2021/blob/main/Assignment4_Orlain.pdf\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "dYF8vktWDlrd"
+      },
+      "source": [
+        "## Linear Algebra for ECE"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "PcENG44DDpa-"
+      },
+      "source": [
+        "## Laboratory 4: Matrices"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "mK4Yw61qD3JB"
+      },
+      "source": [
+        "Now that you have a fundamental knwoledge about Python, we'll try to look into greater dimensions. "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Nns20P4uEBWb"
+      },
+      "source": [
+        "# Objectives\n",
+        "At the end of this activity you will be able to:\n",
+        "\n",
+        "\n",
+        "1.   Be familiar with matrices and their relation to linear equations.\n",
+        "2.   Perform basic matrix operations.\n",
+        "3.   Program and translate matrix equations and operations using Python.\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "RmjQYGIoE6rm"
+      },
+      "source": [
+        "## Discussion"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "KJ5jfG2AE8xf"
+      },
+      "source": [
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt\n",
+        "import scipy.linalg as la\n",
+        "%matplotlib inline"
+      ],
+      "execution_count": 31,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "22yIbUfBFNy7"
+      },
+      "source": [
+        "## Matrices "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "eOlHcesDFaeJ"
+      },
+      "source": [
+        "The notation and use of matrices is probably one of the fundamentals of modern computing. Matrices are also handy representations of complex equations or multiple inter-related equations from 2-dimensional equations to even hundreds and thousands of them. Matrix is a rectangular array or table of numbers, symbols or expressions, arranged in rows and columns, which is used to represent a mathematical object or a property of such an object. "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "yPsa16j-FuoI"
+      },
+      "source": [
+        "Let's say for example you have **A** and **B** as system of equation."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "SZvwgYoXHK2O"
+      },
+      "source": [
+        "$$ \n",
+        "A = \\left\\{\n",
+        "    \\begin{array}\\\n",
+        "      x + y \\\\\n",
+        "      4x -10y\n",
+        "      \\end{array}\n",
+        "  \\right. \\\\\n",
+        "B = \\left\\{\n",
+        "    \\begin{array}\\\n",
+        "        x+y+z \\\\\n",
+        "        3x -2y -z \\\\\n",
+        "        -x +4y +2z\n",
+        "      \\end{array}\n",
+        "  \\right. $$"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_y3FRSqhHRWM"
+      },
+      "source": [
+        "We could see that **A** is a system of 2 equations with 2 parameters. While **B** is a system of 3 equations with 3 parameters. We can represent them as matrices as:"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Crcij7f3HhQ-"
+      },
+      "source": [
+        "$$\n",
+        "A=\\begin{bmatrix} 1 & 1 \\\\ 4 & {-10}\\end{bmatrix} \\\\\n",
+        "B=\\begin{bmatrix} 1 & 1 & 1 \\\\ 3 & -2 & -1 \\\\ -1 & 4 & 2\\end{bmatrix}\n",
+        "$$"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "GM_xPotTHn66"
+      },
+      "source": [
+        "So assuming that you already discussed the fundamental representation of matrices, their types, and operations. We'll proceed in doing them here in Python. "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "CBwt2jb_H4X_"
+      },
+      "source": [
+        "## Declaring Matrices "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "uD5S_ipsH60Z"
+      },
+      "source": [
+        "Just like our previous laboratory activity, we'll represent system of linear equations as a matrix. The entities or numbers in matrices are called the elements of a matrix. These elements are arranged and ordered in rows and columns which form the list/array-like structure of matrices. And just like arrays, these elements are indexed according to their position with respect to their rows and columns. This can be reprsented just like the equation below. Whereas $A$ is a matrix consisting of elements denoted by $a_{i,j}$. Denoted by $i$ is the number of rows in the matrix while $j$ stands for the number of columns.<br>\n",
+        "Do note that the $size$ of a matrix is $i\\times j$."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_RroSdlRIACY"
+      },
+      "source": [
+        "$$A=\\begin{bmatrix}\n",
+        "a_{(0,0)}&a_{(0,1)}&\\dots&a_{(0,j-1)}\\\\\n",
+        "a_{(1,0)}&a_{(1,1)}&\\dots&a_{(1,j-1)}\\\\\n",
+        "\\vdots&\\vdots&\\ddots&\\vdots&\\\\\n",
+        "a_{(i-1,0)}&a_{(i-1,1)}&\\dots&a_{(i-1,j-1)}\n",
+        "\\end{bmatrix}\n",
+        "$$"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "TC-lHb-OIEQJ"
+      },
+      "source": [
+        "We already gone over some of the types of matrices as vectors but we'll further discuss them in this laboratory activity. Since you already know how to describe vectors using shape, dimensions and size attributes, we'll use them to analyze these matrices."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "wuoK3C_IIHwU"
+      },
+      "source": [
+        "## Since we'll keep on describing matrices. Let's make a function.\n",
+        "def describe_mat(matrix):\n",
+        "    print(f'Matrix:\\n{matrix}\\n\\nShape:\\t{matrix.shape}\\nRank:\\t{matrix.ndim}\\n')"
+      ],
+      "execution_count": 32,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "oLOO2FdpIXKu",
+        "outputId": "82035e6a-0400-4751-d9ec-f3159473eb62"
+      },
+      "source": [
+        "## Declaring a 2 x 2 matrix\n",
+        "A = np.array([\n",
+        "    [1, 2],\n",
+        "    [3, 1]\n",
+        "])\n",
+        "describe_mat(A)"
+      ],
+      "execution_count": 33,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[1 2]\n",
+            " [3 1]]\n",
+            "\n",
+            "Shape:\t(2, 2)\n",
+            "Rank:\t2\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ms7j8W6IIhNd",
+        "outputId": "57b00b83-d27d-47af-c9c0-b7fd2d887311"
+      },
+      "source": [
+        "G = np.array([\n",
+        "    [1,1],\n",
+        "    [2,2]\n",
+        "])\n",
+        "describe_mat(G)"
+      ],
+      "execution_count": 34,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[1 1]\n",
+            " [2 2]]\n",
+            "\n",
+            "Shape:\t(2, 2)\n",
+            "Rank:\t2\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "m9lIblKUJzPm",
+        "outputId": "bf17bac5-e06c-43a1-9a7f-c36d4913e811"
+      },
+      "source": [
+        "## Declaring a 3 x 2 matrix\n",
+        "B = np.array([\n",
+        "    [8, 2],\n",
+        "    [5, 4],\n",
+        "    [1, 1]\n",
+        "])\n",
+        "describe_mat(B)"
+      ],
+      "execution_count": 35,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[8 2]\n",
+            " [5 4]\n",
+            " [1 1]]\n",
+            "\n",
+            "Shape:\t(3, 2)\n",
+            "Rank:\t2\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6VI6qUHKJ2tj",
+        "outputId": "3f1b497d-2b29-41bb-b9cb-e2a2e904efea"
+      },
+      "source": [
+        "H = np.array([1,2,3,4,5])\n",
+        "describe_mat(H)"
+      ],
+      "execution_count": 36,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[1 2 3 4 5]\n",
+            "\n",
+            "Shape:\t(5,)\n",
+            "Rank:\t1\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "akXQnb01J5M9"
+      },
+      "source": [
+        "## Categorizing Matrices "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "nI2YUU32J8lh"
+      },
+      "source": [
+        "There are several ways of classifying matrices. Once could be according to their <b>shape</b> and another is according to their <b>element values</b>. We'll try to go through them."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "kzP_u9T1KI66"
+      },
+      "source": [
+        "## Row and Column Matrices "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_krt03HsKNro"
+      },
+      "source": [
+        "Row and column matrices are common in vector and matrix computations. They can also represent row and column spaces of a bigger vector space. Row and column matrices are represented by a single column or single row. So with that being, the shape of row matrices would be  1×*j*  and column matrices would be  *i*×1 ."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "syBppy20KTFI",
+        "outputId": "b7f8468f-1e16-4bf9-a155-def1361b2c0f"
+      },
+      "source": [
+        "## Declaring a Row Matrix\n",
+        "\n",
+        "row_mat_1D = np.array([\n",
+        "    1, 3, 2\n",
+        "]) ## this is a 1-D Matrix with a shape of (3,), it's not really considered as a row matrix.\n",
+        "row_mat_2D = np.array([\n",
+        "    [1,2,3]\n",
+        "]) ## this is a 2-D Matrix with a shape of (1,3)\n",
+        "describe_mat(row_mat_1D)\n",
+        "describe_mat(row_mat_2D)"
+      ],
+      "execution_count": 37,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[1 3 2]\n",
+            "\n",
+            "Shape:\t(3,)\n",
+            "Rank:\t1\n",
+            "\n",
+            "Matrix:\n",
+            "[[1 2 3]]\n",
+            "\n",
+            "Shape:\t(1, 3)\n",
+            "Rank:\t2\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "S6sg0GK7KazT",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "2cfe3436-3fd1-4bdc-cad5-ff55248fda59"
+      },
+      "source": [
+        "## Declaring a Column Matrix\n",
+        "\n",
+        "col_mat = np.array([\n",
+        "    [1],\n",
+        "    [2],\n",
+        "    [5]\n",
+        "]) ## this is a 2-D Matrix with a shape of (3,1)\n",
+        "describe_mat(col_mat)"
+      ],
+      "execution_count": 38,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[1]\n",
+            " [2]\n",
+            " [5]]\n",
+            "\n",
+            "Shape:\t(3, 1)\n",
+            "Rank:\t2\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "w80NsJYTKc4L"
+      },
+      "source": [
+        "## Square Matrices"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ygODfi9LKe2N"
+      },
+      "source": [
+        "Square matrices are matrices that have the same row and column sizes. We could say a matrix is square if $i = j$. We can tweak our matrix descriptor function to determine square matrices. A square matrix is an n x n matrix; that is a matrix having the same number of rows and columns. "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "m9NrlH9sKiMl"
+      },
+      "source": [
+        "def describe_mat(matrix):\n",
+        "    is_square = True if matrix.shape[0] == matrix.shape[1] else False \n",
+        "    print(f'Matrix:\\n{matrix}\\n\\nShape:\\t{matrix.shape}\\nRank:\\t{matrix.ndim}\\nIs Square: {is_square}\\n')"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wnqZCIsZKmsf",
+        "outputId": "ff06938a-3b84-493a-bfec-3ce7be7e0efc"
+      },
+      "source": [
+        "square_mat = np.array([\n",
+        "    [1,2,5],\n",
+        "    [3,3,8],\n",
+        "    [6,1,2]\n",
+        "])\n",
+        "\n",
+        "non_square_mat = np.array([\n",
+        "    [1,2,5],\n",
+        "    [3,3,8]\n",
+        "])\n",
+        "describe_mat(square_mat)\n",
+        "describe_mat(non_square_mat)"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[1 2 5]\n",
+            " [3 3 8]\n",
+            " [6 1 2]]\n",
+            "\n",
+            "Shape:\t(3, 3)\n",
+            "Rank:\t2\n",
+            "Is Square: True\n",
+            "\n",
+            "Matrix:\n",
+            "[[1 2 5]\n",
+            " [3 3 8]]\n",
+            "\n",
+            "Shape:\t(2, 3)\n",
+            "Rank:\t2\n",
+            "Is Square: False\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "AMbIwryRKqv0"
+      },
+      "source": [
+        "# According to element values"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "K5gKimjyKuBz"
+      },
+      "source": [
+        "## Null Matrix"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "LOlOOQOoKxD8"
+      },
+      "source": [
+        "A Null Matrix is a matrix that has no elements. It is always a subspace of any vector or matrix. Whether A is a rectangular or square matrix, A - A is a matrix whose every element is zero. "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "xnlBebv4K1XM"
+      },
+      "source": [
+        "def describe_mat(matrix):\n",
+        "    if matrix.size > 0:\n",
+        "        is_square = True if matrix.shape[0] == matrix.shape[1] else False \n",
+        "        print(f'Matrix:\\n{matrix}\\n\\nShape:\\t{matrix.shape}\\nRank:\\t{matrix.ndim}\\nIs Square: {is_square}\\n')\n",
+        "    else:\n",
+        "        print('Matrix is Null')"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5fltUi4UK3Ve",
+        "outputId": "c8c19a37-ee34-4d4d-b09e-edd067ea9e70"
+      },
+      "source": [
+        "null_mat = np.array([])\n",
+        "describe_mat(null_mat)"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix is Null\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "2npy29V5K42H"
+      },
+      "source": [
+        "## Zero Matrix "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "1ASdAs4PK7GX"
+      },
+      "source": [
+        "A zero matrix can be any rectangular matrix but with all elements having a value of 0."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Cu_2xV7rLC1H",
+        "outputId": "1af9c537-f45c-43d1-ad34-0c171daba0ef"
+      },
+      "source": [
+        "zero_mat_row = np.zeros((1,2))\n",
+        "zero_mat_sqr = np.zeros((2,2))\n",
+        "zero_mat_rct = np.zeros((3,2))\n",
+        "\n",
+        "print(f'Zero Row Matrix: \\n{zero_mat_row}')\n",
+        "print(f'Zero Square Matrix: \\n{zero_mat_sqr}')\n",
+        "print(f'Zero Rectangular Matrix: \\n{zero_mat_rct}')"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Zero Row Matrix: \n",
+            "[[0. 0.]]\n",
+            "Zero Square Matrix: \n",
+            "[[0. 0.]\n",
+            " [0. 0.]]\n",
+            "Zero Rectangular Matrix: \n",
+            "[[0. 0.]\n",
+            " [0. 0.]\n",
+            " [0. 0.]]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "tlJ7MbI6LFzX"
+      },
+      "source": [
+        "## Ones Matrix"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "AMu7K5OlLKpa"
+      },
+      "source": [
+        "A ones matrix, just like the zero matrix, can be any rectangular matrix but all of its elements are 1s instead of 0s."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "mnH3zjaQLNOk",
+        "outputId": "07bd0236-a1e8-4c1b-a09b-680242f6abc2"
+      },
+      "source": [
+        "ones_mat_row = np.ones((1,2))\n",
+        "ones_mat_sqr = np.ones((2,2))\n",
+        "ones_mat_rct = np.ones((3,2))\n",
+        "\n",
+        "print(f'Ones Row Matrix: \\n{ones_mat_row}')\n",
+        "print(f'Ones Square Matrix: \\n{ones_mat_sqr}')\n",
+        "print(f'Ones Rectangular Matrix: \\n{ones_mat_rct}')"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Ones Row Matrix: \n",
+            "[[1. 1.]]\n",
+            "Ones Square Matrix: \n",
+            "[[1. 1.]\n",
+            " [1. 1.]]\n",
+            "Ones Rectangular Matrix: \n",
+            "[[1. 1.]\n",
+            " [1. 1.]\n",
+            " [1. 1.]]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "uJAlmgCtLZzo"
+      },
+      "source": [
+        "## Diagonal Matrix "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "9R_1-g_dLf8d"
+      },
+      "source": [
+        "A diagonal matrix is a square matrix that has values only at the diagonal of the matrix."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "U63LzxY8LiEw",
+        "outputId": "61fc2159-9abc-455c-a3ed-343bdbd69e94"
+      },
+      "source": [
+        "np.array([\n",
+        "    [2,0,0],\n",
+        "    [0,3,0],\n",
+        "    [0,0,5]\n",
+        "])\n",
+        "# a[1,1], a[2,2], a[3,3], ... a[n-1,n-1]"
+      ],
+      "execution_count": 40,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[2, 0, 0],\n",
+              "       [0, 3, 0],\n",
+              "       [0, 0, 5]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 40
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "u9Pf8_gTLm4_",
+        "outputId": "40a652db-dd7d-4f8a-c61c-b41c5160a6fe"
+      },
+      "source": [
+        "d = np.diag([2,3,5,7])\n",
+        "np.diag(d).shape == d.shape[0] == d.shape[1]"
+      ],
+      "execution_count": 41,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "False"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 41
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "0vxtejRUMJpx"
+      },
+      "source": [
+        "## Identity Matrix"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "3KG6rf6pMMmt"
+      },
+      "source": [
+        "An identity matrix is a special diagonal matrix in which the values at the diagonal are ones."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wSoLf1G-MNkx",
+        "outputId": "50c87b72-0a8f-4c35-c5f7-99597f5ecf9f"
+      },
+      "source": [
+        "np.eye(5)"
+      ],
+      "execution_count": 42,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[1., 0., 0., 0., 0.],\n",
+              "       [0., 1., 0., 0., 0.],\n",
+              "       [0., 0., 1., 0., 0.],\n",
+              "       [0., 0., 0., 1., 0.],\n",
+              "       [0., 0., 0., 0., 1.]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 42
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NfhKIXysMRKw",
+        "outputId": "e3560315-3426-4645-dba8-e9c73353a3d4"
+      },
+      "source": [
+        "np.identity(5)"
+      ],
+      "execution_count": 43,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[1., 0., 0., 0., 0.],\n",
+              "       [0., 1., 0., 0., 0.],\n",
+              "       [0., 0., 1., 0., 0.],\n",
+              "       [0., 0., 0., 1., 0.],\n",
+              "       [0., 0., 0., 0., 1.]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 43
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_WEswMhjMTXj"
+      },
+      "source": [
+        "## Upper Triangular Matrix "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Ovj3Jn7fMXk1"
+      },
+      "source": [
+        "An upper triangular matrix is a matrix that has no values below the diagonal."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Wmj4fIdUMarW",
+        "outputId": "0701560f-24b3-4b00-8001-7e58a2e6e248"
+      },
+      "source": [
+        "np.array([\n",
+        "    [1,2,3],\n",
+        "    [0,3,1],\n",
+        "    [0,0,5]\n",
+        "])"
+      ],
+      "execution_count": 44,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[1, 2, 3],\n",
+              "       [0, 3, 1],\n",
+              "       [0, 0, 5]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 44
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "6AYsIrPdMdsi"
+      },
+      "source": [
+        "## Lower Triangular Matrix"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "MFiA80XAMfg_"
+      },
+      "source": [
+        "A lower triangular matrix is a matrix that has no values above the diagonal."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wK36YzrOMh1X",
+        "outputId": "a4c22ecc-5b33-4756-9745-2223e30cbcaf"
+      },
+      "source": [
+        "np.array([\n",
+        "    [1,0,0],\n",
+        "    [5,3,0],\n",
+        "    [7,8,5]\n",
+        "])"
+      ],
+      "execution_count": 45,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[1, 0, 0],\n",
+              "       [5, 3, 0],\n",
+              "       [7, 8, 5]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 45
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "xjv86mgyMkcL"
+      },
+      "source": [
+        "## Practice"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "pb-6epltMmQb"
+      },
+      "source": [
+        "1. Given the linear combination below, try to create a corresponding matrix representing it."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "kdbnLHDkMtik"
+      },
+      "source": [
+        "$$\\theta = 5x + 3y - z$$"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "k14-F2NIMwOJ"
+      },
+      "source": [
+        "2. Given the system of linear combinations below, try to encode it as a matrix. Also describe the matrix."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "15-7J6QpM2br"
+      },
+      "source": [
+        "$$\n",
+        "A = \\left\\{\\begin{array}\n",
+        "5x_1 + 2x_2 +x_3\\\\\n",
+        "4x_2 - x_3\\\\\n",
+        "10x_3\n",
+        "\\end{array}\\right.\n",
+        "$$"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "AcO9I0UOM5wY"
+      },
+      "source": [
+        "3. Given the matrix below, express it as a linear combination in a markdown."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "w35Dxk6GNEzH"
+      },
+      "source": [
+        "G = np.array([\n",
+        "    [1,7,8],\n",
+        "    [2,2,2],\n",
+        "    [4,6,7]\n",
+        "])"
+      ],
+      "execution_count": 47,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "AAxc_8hINHoz"
+      },
+      "source": [
+        "4. Given the matrix below, display the output as a LaTeX makdown also express it as a system of linear combinations."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "O88hxv75NKXF"
+      },
+      "source": [
+        "H = np.tril(G)\n",
+        "H"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "WCY44rAkNTfk"
+      },
+      "source": [
+        "## Matrix Alegbra "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "sPxH9gNgNYAA"
+      },
+      "source": [
+        "## Addition "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8uSxoa43NaK2",
+        "outputId": "c9112b3a-a3d5-49e6-9b41-daf4559dd8c8"
+      },
+      "source": [
+        "A = np.array([\n",
+        "    [1,2],\n",
+        "    [2,3],\n",
+        "    [4,1]\n",
+        "])\n",
+        "B = np.array([\n",
+        "    [2,2],\n",
+        "    [0,0],\n",
+        "    [1,1]\n",
+        "])\n",
+        "A+B"
+      ],
+      "execution_count": 48,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[3, 4],\n",
+              "       [2, 3],\n",
+              "       [5, 2]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 48
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9jh0k1plNeEy",
+        "outputId": "bf96a695-9ad5-4abb-d160-e8c122deab7f"
+      },
+      "source": [
+        "2+A ##Broadcasting\n",
+        "# 2*np.ones(A.shape)+A"
+      ],
+      "execution_count": 49,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[3, 4],\n",
+              "       [4, 5],\n",
+              "       [6, 3]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 49
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "y5CeClqRNfhw"
+      },
+      "source": [
+        "## Subtraction "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "_6hXnLjYNkoT"
+      },
+      "source": [
+        "A-B"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8Yp2IcSqNmZa",
+        "outputId": "8b5a1752-c23e-47c1-fee1-482608331915"
+      },
+      "source": [
+        "3-B == 3*np.ones(B.shape)-B"
+      ],
+      "execution_count": 50,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[ True,  True],\n",
+              "       [ True,  True],\n",
+              "       [ True,  True]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 50
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_26IoambNpSN"
+      },
+      "source": [
+        "## Element-wise Multiplication "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "frY4-O4fNslP",
+        "outputId": "ec9640c1-b17c-47b2-d99a-768f80919987"
+      },
+      "source": [
+        "A*B\n",
+        "np.multiply(A,B)"
+      ],
+      "execution_count": 51,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[2, 4],\n",
+              "       [0, 0],\n",
+              "       [4, 1]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 51
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NWV1YuFaNvbr",
+        "outputId": "36a49ad1-9daf-48cc-f106-6532c8490540"
+      },
+      "source": [
+        "2*A"
+      ],
+      "execution_count": 52,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[2, 4],\n",
+              "       [4, 6],\n",
+              "       [8, 2]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 52
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 165
+        },
+        "id": "sejjZxywNzz2",
+        "outputId": "6d2ac76e-3d21-4602-9893-30f1dec6e6d0"
+      },
+      "source": [
+        "A@B"
+      ],
+      "execution_count": 53,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "ValueError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-53-5016aafd2858>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mA\u001b[0m\u001b[0;34m@\u001b[0m\u001b[0mB\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;31mValueError\u001b[0m: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 3 is different from 2)"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "iGInYMS-N4qX",
+        "outputId": "9d241a34-224d-4181-fc98-aaa4ae282c6d"
+      },
+      "source": [
+        "alpha=10**-10\n",
+        "A/(alpha+B)"
+      ],
+      "execution_count": 54,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[5.e-01, 1.e+00],\n",
+              "       [2.e+10, 3.e+10],\n",
+              "       [4.e+00, 1.e+00]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 54
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "D1bb0I-ON8q3"
+      },
+      "source": [
+        "np.add(A,B)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "-Q4CphF9N_03"
+      },
+      "source": [
+        "## Activity"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ROuU3M5qOCAr"
+      },
+      "source": [
+        "## Task 1 "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "hqoRineWOFbI"
+      },
+      "source": [
+        "Create a function named mat_desc() that througouhly describes a matrix, it should:\n",
+        "\n",
+        "1. Displays the shape, size, and rank of the matrix.\n",
+        "2. Displays whether the matrix is square or non-square.\n",
+        "3. Displays whether the matrix is an empty matrix.\n",
+        "4. Displays if the matrix is an identity, ones, or zeros matrix\n",
+        "Use 5 sample matrices in which their shapes are not lower than  (3,3) . In your methodology, create a flowchart discuss the functions and methods you have done. Present your results in the results section showing the description of each matrix you have declared."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "gVDpjhzKgHQ9"
+      },
+      "source": [
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt\n",
+        "import scipy.linalg as la\n",
+        "%matplotlib inline"
+      ],
+      "execution_count": 63,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Z6JXwVDZex58"
+      },
+      "source": [
+        "def describe_mat (matrix):\n",
+        "  if matrix. size > 0:\n",
+        "    is_square = True if matrix.shape[0] == matrix.shape[1] else False\n",
+        "    print(f'Matrix:\\n{matrix}\\n\\nShape:\\t{matrix.shape}\\nRank:\\t{matrix.ndim}\\nIs Square: {is_square}\\n') \n",
+        "  else:\n",
+        "      print('Matrix is Null')"
+      ],
+      "execution_count": 68,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "QprvJ-I_OL52"
+      },
+      "source": [
+        "A = np.array([\n",
+        "    [0, 2, 4],\n",
+        "    [6, 8, 1],\n",
+        "    [3, 5, 7]\n",
+        "])\n",
+        "\n",
+        "J = np.array([\n",
+        "    [1, 2, 3],\n",
+        "    [6, 5, 4],\n",
+        "    [7, 8, 9]          \n",
+        "])\n",
+        "\n",
+        "B = np.array([])\n",
+        "\n",
+        "ones_mat_row = np.ones((0, 1))\n",
+        "\n",
+        "M = np.eye(3,3 )"
+      ],
+      "execution_count": 77,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rzdZeLoFOMUn",
+        "outputId": "3e6e517a-03e0-426d-b84d-f3c991d50e94"
+      },
+      "source": [
+        "describe_mat(A)"
+      ],
+      "execution_count": 70,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[0 2 4]\n",
+            " [6 8 1]\n",
+            " [3 5 7]]\n",
+            "\n",
+            "Shape:\t(3, 3)\n",
+            "Rank:\t2\n",
+            "Is Square: True\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "n5AuoTAkeHvo",
+        "outputId": "71cda037-89c3-4e41-9b8b-2c6f80f670a4"
+      },
+      "source": [
+        "describe_mat (B)"
+      ],
+      "execution_count": 71,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix is Null\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0LkL6Hp0hVR9",
+        "outputId": "ae366ab3-4e19-40e4-ac63-8e0f784cf553"
+      },
+      "source": [
+        "print(f'Ones Row Matrix: \\n{ones_mat_row}')"
+      ],
+      "execution_count": 78,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Ones Row Matrix: \n",
+            "[]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "cyz4u5-WhuSP",
+        "outputId": "75b69923-253f-48f5-990f-843e8fa94a80"
+      },
+      "source": [
+        "describe_mat (M)"
+      ],
+      "execution_count": 79,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Matrix:\n",
+            "[[1. 0. 0.]\n",
+            " [0. 1. 0.]\n",
+            " [0. 0. 1.]]\n",
+            "\n",
+            "Shape:\t(3, 3)\n",
+            "Rank:\t2\n",
+            "Is Square: True\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "nLFp0FBXjYgS"
+      },
+      "source": [
+        "## Task 2 "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ZJXaKWWXjdQG"
+      },
+      "source": [
+        "Create a function named mat_operations() that takes in two matrices a input parameters it should:\n",
+        "\n",
+        "1. Determines if the matrices are viable for operation and returns your own error message if they are not viable.\n",
+        "2. Returns the sum of the matrices.\n",
+        "3. Returns the differen of the matrices.\n",
+        "4. Returns the element-wise multiplication of the matrices.\n",
+        "5. Returns the element-wise division of the matrices.\n",
+        "Use 5 sample matrices in which their shapes are not lower than  (3,3) . In your methodology, create a flowchart discuss the functions and methods you have done. Present your results in the results section showing the description of each matrix you have declared."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "YucV976VjnBj"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "uaC256_Onh_P"
+      },
+      "source": [
+        "References:\n",
+        "\n",
+        "[1] Matrix- https://en.wikipedia.org/wiki/Matrix_(mathematics)\n",
+        "\n",
+        "[2] Square matrices- https://www.sciencedirect.com/topics/mathematics/square-matrix\n",
+        "\n",
+        "[3] Null matrix- https://www.math-only-math.com/null-matrix.html\n"
+      ]
+    }
+  ]
+}
